@@ -1,13 +1,15 @@
 package codingdojo;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 public class CustomerSyncTest {
@@ -16,10 +18,10 @@ public class CustomerSyncTest {
     public void syncCompanyByExternalId(){
         String externalId = "12345";
 
-        ExternalCustomer externalCustomer = createExternalCompany();
+        ExternalCustomer externalCustomer = CustomerTestDataBuilder.createExternalCompany();
         externalCustomer.setExternalId(externalId);
 
-        Customer customer = createCustomerWithSameCompanyAs(externalCustomer);
+        Customer customer = CustomerTestDataBuilder.createCustomerWithSameCompanyAs(externalCustomer);
         customer.setExternalId(externalId);
 
         CustomerDataLayer db = mock(CustomerDataLayer.class);
@@ -38,29 +40,10 @@ public class CustomerSyncTest {
         assertEquals(externalCustomer.getExternalId(), updatedCustomer.getExternalId());
         assertNull(updatedCustomer.getMasterExternalId());
         assertEquals(externalCustomer.getCompanyNumber(), updatedCustomer.getCompanyNumber());
-        assertEquals(externalCustomer.getPostalAddress(), updatedCustomer.getAddress());
+        assertEquals(externalCustomer.getAddress(), updatedCustomer.getAddress());
         assertEquals(externalCustomer.getShoppingLists(), updatedCustomer.getShoppingLists());
         assertEquals(CustomerType.COMPANY, updatedCustomer.getCustomerType());
         assertNull(updatedCustomer.getPreferredStore());
-    }
-
-
-    private ExternalCustomer createExternalCompany() {
-        ExternalCustomer externalCustomer = new ExternalCustomer();
-        externalCustomer.setExternalId("12345");
-        externalCustomer.setName("Acme Inc.");
-        externalCustomer.setAddress(new Address("123 main st", "Helsingborg", "SE-123 45"));
-        externalCustomer.setCompanyNumber("470813-8895");
-        externalCustomer.setShoppingLists(Arrays.asList(new ShoppingList("lipstick", "blusher")));
-        return externalCustomer;
-    }
-
-    private Customer createCustomerWithSameCompanyAs(ExternalCustomer externalCustomer) {
-        Customer customer = new Customer();
-        customer.setCompanyNumber(externalCustomer.getCompanyNumber());
-        customer.setCustomerType(CustomerType.COMPANY);
-        customer.setInternalId("45435");
-        return customer;
     }
 
 }

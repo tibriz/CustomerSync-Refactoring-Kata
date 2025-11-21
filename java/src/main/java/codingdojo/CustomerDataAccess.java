@@ -1,12 +1,11 @@
 package codingdojo;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public class CustomerDataAccess {
 
     private final CustomerDataLayer customerDataLayer;
-
-    public CustomerDataAccess(CustomerDataLayer customerDataLayer) {
-        this.customerDataLayer = customerDataLayer;
-    }
 
     public CustomerMatches loadCompanyCustomer(String externalId, String companyNumber) {
         CustomerMatches matches = new CustomerMatches();

@@ -7,11 +7,7 @@ public class CustomerSync {
     private final CustomerDataAccess customerDataAccess;
 
     public CustomerSync(CustomerDataLayer customerDataLayer) {
-        this(new CustomerDataAccess(customerDataLayer));
-    }
-
-    public CustomerSync(CustomerDataAccess db) {
-        this.customerDataAccess = db;
+        this.customerDataAccess = new CustomerDataAccess(customerDataLayer);
     }
 
     public boolean syncWithDataLayer(ExternalCustomer externalCustomer) {
@@ -72,11 +68,22 @@ public class CustomerSync {
         }
 
         duplicate.setName(externalCustomer.getName());
+        
+        if (!externalCustomer.isCompany()) {
+            updateBonusPointsBalance(externalCustomer, duplicate);
+        }
 
         if (duplicate.getInternalId() == null) {
             createCustomer(duplicate);
         } else {
             updateCustomer(duplicate);
+        }
+    }
+
+    private static void updateBonusPointsBalance(ExternalCustomer externalCustomer, Customer customer) {
+        // Only update bonus points if they differ from the stored value
+        if (customer.getBonusPointsBalance() != externalCustomer.getBonusPointsBalance()) {
+            customer.setBonusPointsBalance(externalCustomer.getBonusPointsBalance());
         }
     }
 
@@ -95,11 +102,12 @@ public class CustomerSync {
             customer.setCustomerType(CustomerType.COMPANY);
         } else {
             customer.setCustomerType(CustomerType.PERSON);
+            updateBonusPointsBalance(externalCustomer, customer);
         }
     }
 
     private void updateContactInfo(ExternalCustomer externalCustomer, Customer customer) {
-        customer.setAddress(externalCustomer.getPostalAddress());
+        customer.setAddress(externalCustomer.getAddress());
     }
 
     public CustomerMatches loadCompany(ExternalCustomer externalCustomer) {
