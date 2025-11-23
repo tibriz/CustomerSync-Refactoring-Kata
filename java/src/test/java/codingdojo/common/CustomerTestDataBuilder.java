@@ -1,9 +1,14 @@
-package codingdojo;
+package codingdojo.common;
 
+import codingdojo.model.Address;
+import codingdojo.model.Customer;
+import codingdojo.model.CustomerType;
+import codingdojo.model.ExternalCustomer;
+import codingdojo.model.ShoppingList;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Helper class for creating test data objects in customer sync tests.
@@ -22,7 +27,7 @@ public class CustomerTestDataBuilder {
         externalCustomer.setName(NAME);
         externalCustomer.setAddress(new Address("123 main st", "Helsingborg", "SE-123 45"));
         externalCustomer.setCompanyNumber(isCompany ? COMPANY_NUMBER : null);
-        externalCustomer.setShoppingLists(Arrays.asList(new ShoppingList("lipstick", "blusher")));
+        externalCustomer.setShoppingLists(Collections.singletonList(new ShoppingList("lipstick", "blusher")));
         return externalCustomer;
     }
 

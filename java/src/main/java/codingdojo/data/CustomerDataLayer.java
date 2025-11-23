@@ -1,4 +1,7 @@
-package codingdojo;
+package codingdojo.data;
+
+import codingdojo.model.Customer;
+import codingdojo.model.ShoppingList;
 
 public interface CustomerDataLayer {
 

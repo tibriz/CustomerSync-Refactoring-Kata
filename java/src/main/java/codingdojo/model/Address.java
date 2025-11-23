@@ -1,4 +1,4 @@
-package codingdojo;
+package codingdojo.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

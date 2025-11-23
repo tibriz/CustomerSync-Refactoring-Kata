@@ -1,4 +1,4 @@
-package codingdojo;
+package codingdojo.model;
 
 import lombok.Getter;
 

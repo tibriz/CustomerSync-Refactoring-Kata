@@ -1,4 +1,4 @@
-package codingdojo;
+package codingdojo.model;
 
 public class ConflictException extends RuntimeException {
     public ConflictException(String s) {
